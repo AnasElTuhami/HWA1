@@ -25,7 +25,7 @@ After this, you will be prompted to create a name for a Database.
 This will then create a database to put all of the data into.
 SQLite3 is used here.
 
-Next, you will be prompted to create a table name in the database, and python will create it.
+Next, you will be prompted to create a table name for the database, and python will create it.
 
 Once all is complete, the cleaned data that is now in the database will be printed for 
 the user to see.
