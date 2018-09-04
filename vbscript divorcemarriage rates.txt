@@ -1,0 +1,72 @@
+VB Script to get Average Marriage and Divorce rates
+
+Sub AvgRates()
+    Dim tbl As Worksheet
+    Dim x As Integer
+    Dim lrow As Long
+    Dim avgDivorce As Double
+    Dim SumDivorce As Double
+    Dim SumMarriage As Double
+    Dim avgMarriage As Double
+    Dim DivorceCounter As Integer: DivorceCounter = 0
+    Dim MarriageCounter As Integer: MarriageCounter = 0
+    
+    Set wb = ThisWorkbook
+    Set tbl = wb.Sheets("cleaned_excel_to_csv")
+    lrow = tbl.Cells(Rows.Count, "C").End(xlUp).Row
+
+    For x = 2 To lrow
+        If tbl.Range("C" & x) = "Divorce" Then
+            SumDivorce = SumDivorce + Range("D" & x).Value
+            DivorceCounter = DivorceCounter + 1
+        ElseIf tbl.Range("C" & x) = "Marriage" Then
+            SumMarriage = SumMarriage + Range("D" & x).Value
+            MarriageCounter = MarriageCounter + 1
+        End If
+    Next x
+    avgDivorce = (SumDivorce / DivorceCounter)
+    avgMarriage = (SumMarriage / MarriageCounter)
+    Range("G2").Value = avgDivorce
+    Range("G4").Value = avgMarriage
+End Sub
+
+Sub EventCountByYear()
+    Dim tbl As Worksheet
+    Dim y As Integer
+    Dim Year As Integer: Year = 1990
+    Dim lrow As Long
+    Dim DivorceCount As Integer: DivorceCount = 0
+    Dim MarriageCount As Integer: MarriageCount = 0
+    Dim pasteCount As Integer: pasteCount = 2
+    Dim AvgMarriageByYear As Double: AvgMarriageByYear = 0
+    Dim AvgDivorceByYear As Double: AvgDivorceByYear = 0
+    
+    Set wb = ThisWorkbook
+    Set tbl = wb.Sheets("cleaned_excel_to_csv")
+    lrow = tbl.Cells(Rows.Count, "C").End(xlUp).Row
+    
+    For Year = 1990 To 2011
+    For x = 2 To lrow
+        If tbl.Range("C" & x) = "Divorce" And tbl.Range("B" & x) = Year Then
+            DivorceCounter = DivorceCounter + 1
+            AvgDivorceByYear = AvgDivorceByYear + Range("D" & x).Value
+        ElseIf tbl.Range("C" & x) = "Marriage" And tbl.Range("B" & x) = Year Then
+            MarriageCounter = MarriageCounter + 1
+            AvgMarriageByYear = AvgMarriageByYear + Range("D" & x).Value
+        End If
+    Next x
+    If DivorceCounter > 1 And MarriageCounter > 1 Then
+    AvgDivorceByYear = AvgDivorceByYear / DivorceCounter
+    AvgMarriageByYear = AvgMarriageByYear / DivorceCounter
+    Range("I" & pasteCount).Value = Year
+    Range("J" & pasteCount).Value = AvgDivorceByYear
+    Range("K" & pasteCount).Value = AvgMarriageByYear
+    pasteCount = pasteCount + 1
+    DivorceCounter = 0
+    MarriageCounter = 0
+    AvgDivorceByYear = 0
+    AvgMarriageByYear = 0
+    End If
+    Next Year
+End Sub
+
